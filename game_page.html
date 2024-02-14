@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,20 +12,29 @@
     <img id ="Player" src = "player.png" style="display: none;">
 
     <script>
-        setInterval (mainLoop, refreshRate);
+        setInterval (mainLoop, 60);
         //Player variables
-        var Player = 
+        var player = 
         {
-            X: 0, Y: 0, Facing: "L", Img: document.getElementById("Player")
+            X: 0, Y: 0, dir: "R", img: document.getElementById("Player")
         }
 
         //Images
         var Player = document.getElementById("Player");
 
+
+        
+
+
         function mainLoop()
         {
-
+            
         }  
+
+        function KeyHandler()
+        {
+
+        }
     </script>
 </body>
 </html>
