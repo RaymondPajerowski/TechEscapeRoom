@@ -53,7 +53,14 @@
                 player.X -= Speed;
                 console.log("Left");
             }
-        }
+
+            if(key.code == "KeyD" || key.code == "ArrowRight")
+            {
+                key.preventDefault();
+                player.X += Speed;
+                console.log("Right");
+            }
+        } 
 
         function drawImg(img, x, y)
         {
