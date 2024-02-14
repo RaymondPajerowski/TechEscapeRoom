@@ -42,7 +42,9 @@
         function mainLoop()
         {
             drawImg(player.img, player.x, player.y);
-            console.log("Player drawn");
+            console.log("Player drawn");\
+
+            console.log(player.X + " " + player.Y);
         }  
 
         function keySetter(key,value)
@@ -51,14 +53,12 @@
             {
                 key.preventDefault();
                 player.X -= Speed;
-                console.log("Left");
             }
 
             if(key.code == "KeyD" || key.code == "ArrowRight")
             {
                 key.preventDefault();
                 player.X += Speed;
-                console.log("Right");
             }
         } 
 
