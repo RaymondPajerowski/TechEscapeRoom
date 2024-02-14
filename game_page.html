@@ -6,9 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"> Your browser does not support the HTML canvas tag. </canvas>
     <h1>Escape Room</h1>
     <a href='index.html'> Home </a>
+    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"> Your browser does not support the HTML canvas tag. </canvas>
+
 
     <img id ="Player" src = "player.png" style="display: none;">
 
@@ -27,8 +28,8 @@
         }
 
         // Set canvas width + height
-          ctx.canvas.width  = window.innerWidth;
-          ctx.canvas.height = window.innerHeight;
+          ctx.canvas.width  = window.innerWidth-10;
+          ctx.canvas.height = window.innerHeight-50;
 
 
         function mainLoop()
