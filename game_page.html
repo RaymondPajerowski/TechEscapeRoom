@@ -6,24 +6,29 @@
     <title>Document</title>
 </head>
 <body>
+    <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"> Your browser does not support the HTML canvas tag. </canvas>
     <h1>Escape Room</h1>
     <a href='index.html'> Home </a>
 
     <img id ="Player" src = "player.png" style="display: none;">
 
     <script>
+        // Call loop
         setInterval (mainLoop, 60);
+
+        // Canvas variables
+        const c = document.getElementById("myCanvas");
+        const ctx = c.getContext("2d");
+        
         //Player variables
         var player = 
         {
             X: 0, Y: 0, dir: "R", img: document.getElementById("Player")
         }
 
-        //Images
-        var Player = document.getElementById("Player");
-
-
-        
+        // Set canvas width + height
+          ctx.canvas.width  = window.innerWidth;
+          ctx.canvas.height = window.innerHeight;
 
 
         function mainLoop()
@@ -31,7 +36,7 @@
             
         }  
 
-        function KeyHandler()
+        function keyHandler()
         {
 
         }
