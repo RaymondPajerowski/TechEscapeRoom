@@ -31,7 +31,7 @@
         ctx.canvas.width  = window.innerWidth-10;
         ctx.canvas.height = window.innerHeight-125;
 
-        drawImg(player.img);
+        drawImg(player.img, 10, 10);
         
 
         function mainLoop()
@@ -44,9 +44,9 @@
 
         }
 
-        function drawImg(img)
+        function drawImg(img, x, y)
         {
-            ctx.drawImage(img, 10, 10);       
+            ctx.drawImage(img, x, y);       
         }
     </script>
 </body>
