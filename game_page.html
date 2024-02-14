@@ -17,9 +17,16 @@
         // Call loop
         setInterval (mainLoop, 60);
 
+        // Variables
+        var Speed = 5;
+
         // Canvas variables
         const c = document.getElementById("myCanvas");
         const ctx = c.getContext("2d");
+
+        // Listeners
+        window.addEventListener("keydown",function(event){ keySetter(event, true)  });
+        window.addEventListener("keyup",function(event){ keySetter(event, false)  });
         
         //Player variables
         var player = 
@@ -38,9 +45,14 @@
             console.log("Player drawn");
         }  
 
-        function keyHandler()
+        function keySetter(key,value)
         {
-
+            if(key.code == KeyA || key.code == ArrowLeft)
+            {
+                key.preventDefault();
+                player.X -= Speed;
+                console.log("Left");
+            }
         }
 
         function drawImg(img, x, y)
