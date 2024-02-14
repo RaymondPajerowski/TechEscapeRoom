@@ -30,13 +30,11 @@
         // Set canvas width + height
         ctx.canvas.width  = window.innerWidth-10;
         ctx.canvas.height = window.innerHeight-125;
-
-        drawImg(player.img, 10, 10);
         
 
         function mainLoop()
         {
-            
+            drawImg(player.img, player.x, player.y);
         }  
 
         function keyHandler()
