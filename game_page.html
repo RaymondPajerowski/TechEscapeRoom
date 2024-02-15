@@ -11,7 +11,8 @@
     <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"> Your browser does not support the HTML canvas tag. </canvas>
 
 
-    <img id ="Player" src = "player.png" style="display: none;">
+    <img id ="PlayerR" src = "playerR.png" style="display: none;">
+    <img id ="PlayerL" src = "playerL.png" style="display: none;">
 
     <script>
         // Call loop
@@ -31,7 +32,7 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, FacingR: true, moved: false, isGround: false, img: document.getElementById("Player")
+            X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
         // Set canvas width + height
@@ -42,15 +43,15 @@
         function mainLoop()
         {
             // Debug
-            console.log(player.X + " " + player.Y);
+            console.log(player.facingR);
+            //console.log(player.X + " " + player.Y);
 
             // Clear player
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             // Draw new player 
-            ctx.drawImage(player.img, player.X, player.Y, 100, 100);
-            //if(player.FacingR == true)
-            //else 
+            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, 100, 100);
+            else ctx.drawImage(player.imgL, player.X, player.Y, 100, 100);
 
             // Call functions
             checkGround();
@@ -63,7 +64,7 @@
             {
                 key.preventDefault();
                 player.X -= Speed;
-                player.facingR = true;
+                player.facingR = false;
                 player.moved = true;
             }
 
@@ -71,7 +72,7 @@
             {
                 key.preventDefault();
                 player.X += Speed;
-                player.facingR = false;
+                player.facingR = true;
                 player.moved = true;
             }
 
@@ -106,7 +107,7 @@
 
         function gravity()
         {
-            if(player.isGround == false) player.Y += 10;
+            if(player.isGround == false) player.Y += 25;
         }
 
         function checkGround()
