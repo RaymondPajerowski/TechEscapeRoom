@@ -123,8 +123,15 @@
 
         function checkGround()
         {
-            if(player.Y = floorHeight) isGround = true; 
-            else isGround = false; 
+            if(player.Y = floorHeight) 
+            {
+                isGround = true;
+            }
+            else 
+            {
+                isGround = false;
+            }
+            
             if(player.Y > floorHeight) player.Y = floorHeight;
         }
     </script>
