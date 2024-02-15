@@ -31,7 +31,7 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, FacingR: true, isGround: true, img: document.getElementById("Player")
+            X: 0, Y: 0, FacingR: true, moved: false, isGround: false, img: document.getElementById("Player")
         }
 
         // Set canvas width + height
@@ -44,7 +44,10 @@
             // Debug
             console.log(player.X + " " + player.Y);
 
-            // Draw player
+            // Clear old player
+            if(player.moved == true) ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw new player
             drawRect(player.X, player.Y, 100, 50);
 
             // Call functions
@@ -59,6 +62,7 @@
                 key.preventDefault();
                 player.X -= Speed;
                 player.facingR = true;
+                player.moved = true;
             }
 
             if(key.code == "KeyD" || key.code == "ArrowRight")
@@ -66,13 +70,17 @@
                 key.preventDefault();
                 player.X += Speed;
                 player.facingR = false;
+                player.moved = true;
             }
 
             if(key.code == "KeyW" || key.code == "ArrowUp" && player.isGround == true)
             {
                 jump();
+                player.moved = true;
                 
             }
+
+            player.moved = false;
         } 
 
         function drawImg(img, x, y)
@@ -85,18 +93,19 @@
             ctx.beginPath();
             ctx.strokeStyle = '#000000';
             ctx.fillStyle = '#000000';
-            ctx.rect(x, y, h, w);
+            Player = ctx.fillRect(x, y, h, w);
             ctx.stroke();
         }
 
         function jump()
         {
             player.Y -= 15;
+            player.isGround = false;
         }
 
         function gravity()
         {
-            if(player.isGround == true) player.Y += 10;
+            if(player.isGround == false) player.Y += 10;
         }
 
         function checkGround()
