@@ -91,7 +91,7 @@
 
         function jump()
         {
-            player.Y += 15;
+            player.Y -= 15;
         }
 
         function gravity()
@@ -101,9 +101,9 @@
 
         function checkGround()
         {
-            if(player.Y >= 200) isGround = true;
+            if(player.Y <= 200) isGround = true;
             else isGround = false;
-            if(player.Y < 200) player.Y = 200;
+            if(player.Y > 200) player.Y = 200;
         }
     </script>
 </body>
