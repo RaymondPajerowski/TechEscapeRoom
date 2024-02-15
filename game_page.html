@@ -18,13 +18,15 @@
         // Call loop
         setInterval (mainLoop, 60);
 
-        // Variables
-        var Speed = 5;
-
         // Canvas variables
         const c = document.getElementById("myCanvas");
         const ctx = c.getContext("2d");
-
+        
+        // Variables
+        var Speed = 5;
+        var playerSize = ctx.canvas.height/5;
+        var floorHeight = ctx.canvas.height-ctx.canvas.height/10
+        
         // Listeners
         window.addEventListener("keydown",function(event){ keySetter(event, true)  });
         window.addEventListener("keyup",function(event){ keySetter(event, false)  });
@@ -35,13 +37,15 @@
             X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
-        // Set canvas width + height
-        ctx.canvas.width  = window.innerWidth-10;
-        ctx.canvas.height = window.innerHeight-125;
+
         
 
         function mainLoop()
         {
+            // Set canvas width + height
+            ctx.canvas.width  = window.innerWidth-10;
+            ctx.canvas.height = window.innerHeight-125;
+            
             // Debug
             console.log(player.facingR);
             //console.log(player.X + " " + player.Y);
@@ -50,8 +54,8 @@
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             // Draw new player 
-            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, 100, 100);
-            else ctx.drawImage(player.imgL, player.X, player.Y, ctx.canvas.height/10, ctx.canvas.height/10);
+            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
+            else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
 
             // Call functions
             checkGround();
@@ -76,7 +80,7 @@
                 player.moved = true;
             }
 
-            if(key.code == "KeyW" || key.code == "ArrowUp" && player.isGround == true)
+            if(key.code == "KeyW" && player.isGround == true || key.code == "ArrowUp" && player.isGround == true)
             {
                 jump();
                 player.moved = true;                
@@ -112,7 +116,7 @@
 
         function checkGround()
         {
-            if(player.Y >= 500) isGround = true;
+            if(player.Y >= floorHeight) isGround = true;
             else isGround = false;
             if(player.Y > 500) player.Y = 500;
         }
