@@ -82,6 +82,8 @@
                 player.moved = true;
             }
 
+            if(player.X > ctx.canvas.width) player.X = ctx.canvas.width;
+
             if(key.code == "KeyW" && player.isGround == true || key.code == "ArrowUp" && player.isGround == true)
             {
                 jump();
