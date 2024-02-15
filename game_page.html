@@ -31,7 +31,7 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, dir: "R", img: document.getElementById("Player")
+            X: 0, Y: 0, FacingR: true, isGround: true, img: document.getElementById("Player")
         }
 
         // Set canvas width + height
@@ -43,6 +43,7 @@
         {
             console.log(player.X + " " + player.Y);
             drawRect(player.X, player.Y, 100, 100);
+            gravity();
         }  
 
         function keySetter(key,value)
@@ -51,12 +52,20 @@
             {
                 key.preventDefault();
                 player.X -= Speed;
+                player.facingR = true;
             }
 
             if(key.code == "KeyD" || key.code == "ArrowRight")
             {
                 key.preventDefault();
                 player.X += Speed;
+                player.facingR = false;
+            }
+
+            if(key.code == "KeyW" || key.code == ArrowUp && player.isGround == true)
+            {
+                jump();
+                
             }
         } 
 
@@ -71,6 +80,16 @@
             ctx.strokeStyle = '#f321ec';
             ctx.rect(x, y, h, w);
             ctx.stroke();
+        }
+
+        jump()
+        {
+            
+        }
+
+        gravity()
+        {
+            
         }
     </script>
 </body>
