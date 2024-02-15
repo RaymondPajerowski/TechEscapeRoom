@@ -51,7 +51,7 @@
 
             // Draw new player 
             if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, 100, 100);
-            else ctx.drawImage(player.imgL, player.X, player.Y, 100, 100);
+            else ctx.drawImage(player.imgL, player.X, player.Y, ctx.canvas.height/10, ctx.canvas.height/10);
 
             // Call functions
             checkGround();
