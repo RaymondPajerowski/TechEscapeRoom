@@ -74,7 +74,7 @@
 
             if(player.X < 0) player.X = 0;
 
-            if(key.code == "KeyD" && player.X < ctx.canvas.width || key.code == "ArrowRight" && player.X < ctx.canvas.width)
+            if(key.code == "KeyD" && player.X < ctx.canvas.width-playerSize || key.code == "ArrowRight" && player.X < ctx.canvas.width-playerSize)
             {
                 key.preventDefault();
                 player.X += Speed;
@@ -82,7 +82,7 @@
                 player.moved = true;
             }
 
-            if(player.X > ctx.canvas.width) player.X = ctx.canvas.width;
+            if(player.X > ctx.canvas.width-playerSize) player.X = ctx.canvas.width-playerSize;
 
             if(key.code == "KeyW" && player.isGround == true || key.code == "ArrowUp" && player.isGround == true)
             {
