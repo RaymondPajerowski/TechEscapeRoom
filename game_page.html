@@ -42,7 +42,7 @@
         function mainLoop()
         {
             console.log(player.X + " " + player.Y);
-            drawRect(player.X, player.Y, 100, 100);
+            drawRect(player.X, player.Y, 100, 50);
             gravity();
         }  
 
@@ -77,7 +77,8 @@
         function drawRect(x, y, h, w)
         {
             ctx.beginPath();
-            ctx.strokeStyle = '#f321ec';
+            ctx.strokeStyle = '#000000';
+            ctx.fillStyle = '#000000';
             ctx.rect(x, y, h, w);
             ctx.stroke();
         }
