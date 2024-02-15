@@ -64,7 +64,7 @@
 
         function keySetter(key,value)
         {
-            if(key.code == "KeyA" || key.code == "ArrowLeft")
+            if(key.code == "KeyA" && player.X > 0|| key.code == "ArrowLeft" && player.X > 0)
             {
                 key.preventDefault();
                 player.X -= Speed;
@@ -72,7 +72,9 @@
                 player.moved = true;
             }
 
-            if(key.code == "KeyD" || key.code == "ArrowRight")
+            if(player.X < 0) player.X = 0;
+
+            if(key.code == "KeyD" && player.X < ctx.canvas.width || key.code == "ArrowRight" && player.X < ctx.canvas.width)
             {
                 key.preventDefault();
                 player.X += Speed;
