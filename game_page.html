@@ -44,11 +44,13 @@
             // Debug
             console.log(player.X + " " + player.Y);
 
-            // Clear old player
-            if(player.moved == true) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear player
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            // Draw new player
-            drawRect(player.X, player.Y, 100, 50);
+            // Draw new player 
+            ctx.drawImage(player.img, player.X, player.Y, 100, 100);
+            //if(player.FacingR == true)
+            //else 
 
             // Call functions
             checkGround();
@@ -76,8 +78,7 @@
             if(key.code == "KeyW" || key.code == "ArrowUp" && player.isGround == true)
             {
                 jump();
-                player.moved = true;
-                
+                player.moved = true;                
             }
 
             player.moved = false;
@@ -110,9 +111,9 @@
 
         function checkGround()
         {
-            if(player.Y >= 200) isGround = true;
+            if(player.Y >= 500) isGround = true;
             else isGround = false;
-            if(player.Y > 200) player.Y = 200;
+            if(player.Y > 500) player.Y = 500;
         }
     </script>
 </body>
