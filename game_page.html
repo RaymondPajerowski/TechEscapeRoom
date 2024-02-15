@@ -41,8 +41,14 @@
 
         function mainLoop()
         {
+            // Debug
             console.log(player.X + " " + player.Y);
+
+            // Draw player
             drawRect(player.X, player.Y, 100, 50);
+
+            // Call functions
+            checkGround();
             gravity();
         }  
 
@@ -90,7 +96,14 @@
 
         function gravity()
         {
-            player.Y -= 10;
+            if(player.isGround == false) player.Y -= 10;
+        }
+
+        function checkGround()
+        {
+            if(player.Y >= 75) isGround = true;
+            else isGround = false;
+            if(player.Y < 75) player.Y = 75;
         }
     </script>
 </body>
