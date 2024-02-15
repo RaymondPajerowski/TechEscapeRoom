@@ -118,19 +118,15 @@
 
         function gravity()
         {
-            if(player.isGround == false) player.Y += 25; 
+            //if(player.isGround == false) 
+            player.Y += 25; 
         }
 
         function checkGround()
         {
-            if(player.Y = floorHeight) 
-            {
-                isGround = true;
-            }
-            else 
-            {
-                isGround = false;
-            }
+            if(player.Y = floorHeight) isGround = true;
+
+            else isGround = false;
             
             if(player.Y > floorHeight) player.Y = floorHeight;
         }
