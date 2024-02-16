@@ -38,7 +38,8 @@
             X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
-
+        // Stages
+        var stage = {one: true, two: false, three: false, four: false}
         
 
         function mainLoop()
@@ -51,11 +52,7 @@
 
             
             // Debug
-            //console.log("is ground " + player.isGround);
-            //console.log("Y " + player.Y);
-            //console.log("Floor height " + floorHeight);
-            //console.log(player.facingR);
-            //console.log(player.X + " " + player.Y);
+
 
             // Clear player
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -64,9 +61,11 @@
             if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
             else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
 
+
             // Call functions
             checkGround();
             gravity();
+            drawStage();
         }  
 
         function keySetter(key,value)
@@ -118,17 +117,16 @@
         {
             player.Y -= 15;
             //player.isGround = false;
+            for (let i = 0; i < 5; i++) 
+            {
+                player.Y -= 5;
+            }
         }
 
         function gravity()
         {
             //if(player.isGround == false) 
             player.Y += 25; 
-            for (let i = 0; i < 20; i++) 
-            {
-                //player.Y += 5;
-                //
-            }
         }
 
         function checkGround()
@@ -142,7 +140,34 @@
 
         function move()
         {
-            
+
+        }
+
+        function drawStage()
+        {
+            // Erase old stage
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            // Draw stage
+            if(stage.one == true)
+            {
+                
+            }
+
+            else if(stage.two == true) 
+            {
+
+            }
+
+            else if(stage.three == true) 
+            {
+
+            }
+
+            else 
+            {
+
+            }
         }
     </script>
 </body>
