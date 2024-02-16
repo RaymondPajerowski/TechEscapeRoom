@@ -35,7 +35,7 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
+            X: 0, Y: 0, facingR: true, moved: false, isGround: false, newX: 0, newY: 0, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
         // Stages
@@ -73,7 +73,12 @@
             if(key.code == "KeyA" && player.X > 0|| key.code == "ArrowLeft" && player.X > 0)
             {
                 key.preventDefault();
-                player.X -= Speed;
+
+                // Move shit
+                player.newX = player.X;
+                player.newX -= Speed;
+                if(player.newX){}
+
                 player.facingR = false;
                 player.moved = true;
             }
