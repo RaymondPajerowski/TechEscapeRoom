@@ -25,6 +25,7 @@
         // Variables
         var Speed = 5;
         var playerSize = ctx.canvas.height/1;
+        var floorHeight;
         //var Height = ctx.canvas.height-ctx.canvas.height/10;
         
         // Listeners
@@ -46,10 +47,13 @@
             ctx.canvas.width  = window.innerWidth-10;
             ctx.canvas.height = window.innerHeight-125;
 
-            var floorHeight = ctx.canvas.height;//-ctx.canvas.height/10;
+            floorHeight = ctx.canvas.height-playerSize;
 
             
             // Debug
+            //console.log("is ground " + player.isGround);
+            //console.log("Y " + player.Y);
+            //console.log("Floor height " + floorHeight);
             //console.log(player.facingR);
             //console.log(player.X + " " + player.Y);
 
@@ -113,22 +117,32 @@
         function jump()
         {
             player.Y -= 15;
-            player.isGround = false;
+            //player.isGround = false;
         }
 
         function gravity()
         {
             //if(player.isGround == false) 
             player.Y += 25; 
+            for (let i = 0; i < 20; i++) 
+            {
+                //player.Y += 5;
+                //
+            }
         }
 
         function checkGround()
         {
-            if(player.Y = floorHeight) isGround = true;
+            if(player.Y >= floorHeight) player.isGround = true;
 
-            else isGround = false;
+            else player.isGround = false;
             
-            if(player.Y > floorHeight) player.Y = floorHeight;
+            if(player.Y >= floorHeight) player.Y = floorHeight;
+        }
+
+        function move()
+        {
+            
         }
     </script>
 </body>
