@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Game</title>
 </head>
 <body>
     <h1>Escape Room</h1>
@@ -18,13 +18,15 @@
         // Call loop
         setInterval (mainLoop, 60);
 
-        // Variables
-        var Speed = 5;
-
         // Canvas variables
         const c = document.getElementById("myCanvas");
         const ctx = c.getContext("2d");
-
+        
+        // Variables
+        var Speed = 5;
+        var playerSize = ctx.canvas.height/1;
+        //var Height = ctx.canvas.height-ctx.canvas.height/10;
+        
         // Listeners
         window.addEventListener("keydown",function(event){ keySetter(event, true)  });
         window.addEventListener("keyup",function(event){ keySetter(event, false)  });
@@ -35,23 +37,28 @@
             X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
-        // Set canvas width + height
-        ctx.canvas.width  = window.innerWidth-10;
-        ctx.canvas.height = window.innerHeight-125;
+
         
 
         function mainLoop()
         {
+            // Set canvas width + height
+            ctx.canvas.width  = window.innerWidth-10;
+            ctx.canvas.height = window.innerHeight-125;
+
+            var floorHeight = ctx.canvas.height;//-ctx.canvas.height/10;
+
+            
             // Debug
-            console.log(player.facingR);
+            //console.log(player.facingR);
             //console.log(player.X + " " + player.Y);
 
             // Clear player
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             // Draw new player 
-            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, 100, 100);
-            else ctx.drawImage(player.imgL, player.X, player.Y, 100, 100);
+            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
+            else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
 
             // Call functions
             checkGround();
@@ -60,7 +67,7 @@
 
         function keySetter(key,value)
         {
-            if(key.code == "KeyA" || key.code == "ArrowLeft")
+            if(key.code == "KeyA" && player.X > 0|| key.code == "ArrowLeft" && player.X > 0)
             {
                 key.preventDefault();
                 player.X -= Speed;
@@ -68,7 +75,9 @@
                 player.moved = true;
             }
 
-            if(key.code == "KeyD" || key.code == "ArrowRight")
+            if(player.X < 0) player.X = 0;
+
+            if(key.code == "KeyD" && player.X < ctx.canvas.width-playerSize || key.code == "ArrowRight" && player.X < ctx.canvas.width-playerSize)
             {
                 key.preventDefault();
                 player.X += Speed;
@@ -76,7 +85,9 @@
                 player.moved = true;
             }
 
-            if(key.code == "KeyW" || key.code == "ArrowUp" && player.isGround == true)
+            if(player.X > ctx.canvas.width-playerSize) player.X = ctx.canvas.width-playerSize;
+
+            if(key.code == "KeyW" && player.isGround == true || key.code == "ArrowUp" && player.isGround == true)
             {
                 jump();
                 player.moved = true;                
@@ -107,14 +118,17 @@
 
         function gravity()
         {
-            if(player.isGround == false) player.Y += 25;
+            //if(player.isGround == false) 
+            player.Y += 25; 
         }
 
         function checkGround()
         {
-            if(player.Y >= 500) isGround = true;
+            if(player.Y = floorHeight) isGround = true;
+
             else isGround = false;
-            if(player.Y > 500) player.Y = 500;
+            
+            if(player.Y > floorHeight) player.Y = floorHeight;
         }
     </script>
 </body>
