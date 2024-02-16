@@ -153,6 +153,12 @@
                 ctx.fillStyle = '#26580F';
                 ctx.fillRect(ctx.canvas.width/2, ctx.canvas.height-ctx.canvas.height/10, ctx.canvas.width/4, ctx.canvas.height/10);
                 ctx.stroke();
+
+                // Stupid fucking scuffed dumbass colliders
+                if(player.X > ctx.canvas.width/2 && player.X < ctx.canvas.width/4 && player.Y > ctx.canvas.height/10-playerSize)
+                {
+                    player.Y = ctx.canvas.height/10-playerSize;
+                }
             }
 
             else if(stage.two == true) 
