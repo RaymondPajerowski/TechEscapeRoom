@@ -38,6 +38,9 @@
             X: 0, Y: 0, facingR: true, moved: false, isGround: false, newX: 0, newY: 0, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
+        // Walls and shit
+        const Walls = []
+
         // Stages
         var stage = {one: true, two: false, three: false, four: false}
         
@@ -77,7 +80,18 @@
                 // Move shit
                 player.newX = player.X;
                 player.newX -= Speed;
-                if(player.newX){}
+
+                currentWall = 0;
+
+                for(let i = 0; i < Walls.length; i++)
+                {
+                    if(player.newX < Walls.[currentWall])
+                    {
+
+                    }
+
+                    currentWall++;
+                }
 
                 player.facingR = false;
                 player.moved = true;
