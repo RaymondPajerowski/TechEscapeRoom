@@ -27,6 +27,7 @@
         var playerSize = ctx.canvas.height/1;
         var floorHeight;
         var distanceToGround;
+        var jumpHeight = ctx.canvas.height.20
 
         //var Height = ctx.canvas.height-ctx.canvas.height/10;
         
@@ -133,7 +134,7 @@
                 for (let i = 0; i < 25; i++) 
                 {
                     player.newY = player.Y;
-                    player.newY -= 5;
+                    player.newY -= jumpHeight;
                     for(let i = 0; i < ObjList.length; i++)
                     {
                         if(player.newY > ObjList[i].Y + ObjList[i].Height) player.Y = player.newY
@@ -165,7 +166,7 @@
             for(let i = 0; i < ObjList.length; i++)
             {
                 if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY
-                else if(player.X < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY
+                else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY
             }
         }
 
