@@ -78,9 +78,6 @@
             gravity();
             drawStage();
             movePlayer();
-
-            // Add objects
-            addObj(100,100,100,100,"#100000");
         }  
 
         function keySetter(key,value)
@@ -104,37 +101,49 @@
         function movePlayer()
         {
             // Left
-            if(KeyStates.Left)
+            if(KeyStates.Left || KeyStates.Right)
             {
                 player.newX = player.X;
-                player.newX -= Speed;
+                if(KeyStates.Left) player.newX -= Speed;
+                if(KeyStates.Right) player.newX += Speed;
                 for(let i = 0; i < ObjList.length; i++)
                 {
-                    if(player.newX + playerSize < ObjList[i].X && player.Y >= ObjList[i].Y || player.newX > ObjList[i].X + ObjList[i].Width && player.Y >= ObjList[i].Y)
+                    if(player.newX + playerSize < ObjList[i].X || player.newX > ObjList[i].X + ObjList[i].Width)
                     {
                         player.X = player.newX;
-                        player.facingR = false;
+                        if(KeyStates.Left) player.facingR = false;
+                        else if(KeyStates.Right) player.facingR = true;
+                        console.log("urmom");
+                    }
+
+                    else if(player.Y >= ObjList[i].Y + ObjList[i].Height || player.Y + playerSize <= ObjList[i].Y)
+                    {
+                        player.X = player.newX;
+                        if(KeyStates.Left) player.facingR = false;
+                        else  if(KeyStates.Right) player.facingR = true;
+                        console.log("urmomdsr");
                     }
                 }
             }
 
-            // Right
-            if(KeyStates.Right)
-            {
-                player.newX = player.X;
-                player.newX += Speed;
-                for(let i = 0; i < ObjList.length; i++)
-                {     
-                    if(player.newX + playerSize < ObjList[i].X && player.Y >= ObjList[i].Y || player.newX > ObjList[i].X + ObjList[i].Width && player.Y >= ObjList[i].Y)
-                    {
-                        player.X = player.newX;
-                        player.facingR = true;
-                    }
-                }
-            }
-
+           
             // Jump
-            if(KeyStates.Jump) jump();
+            if(KeyStates.Jump && player.isGround == true)
+            {
+                player.isGround = false;
+
+                for (let i = 0; i < 25; i++) 
+                {
+                    player.newY = player.Y;
+                    player.newY -= 5;
+                    for(let i = 0; i < ObjList.length; i++)
+                    {
+                        if(player.newY > ObjList[i].Y + ObjList[i].Height) player.Y = player.newY
+                        else if(player.X < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY
+                    }
+                    setTimeout(250);
+                }
+            }
         }
 
         function drawImg(img, x, y)
@@ -142,28 +151,23 @@
             ctx.drawImage(img, x, y);       
         }
 
-        function drawRect(x, y, h, w)
+        function drawRect(x, y, h, w, c)
         {
             ctx.beginPath();
-            ctx.strokeStyle = '#000000';
-            ctx.fillStyle = '#000000';
+            ctx.strokeStyle = c;
+            ctx.fillStyle = c;
             Player = ctx.fillRect(x, y, h, w);
             ctx.stroke();
         }
 
-        function jump()
-        {
-            player.Y -= 15;
-            player.isGround = false;
-            for (let i = 0; i < 5; i++) 
-            {
-                player.Y -= 5;
-            }
-        }
-
         function gravity()
         {
-            if(player.isGround == false) player.Y += 25; 
+            player.newY = player.Y;
+            if(player.isGround == false) player.newY += 25; 
+            for(let i = 0; i < ObjList.length; i++)
+            {
+                if(player.newY <= ObjList[i].Y + ObjList[i].Height) player.Y = player.newY
+            }
         }
 
         function checkGround()
@@ -182,13 +186,23 @@
             ObjList.push(newObj);
         }
 
+        function drawObj()
+        {
+            for(let i = 0; i < ObjList.length; i++)
+            {
+                drawRect(ObjList[i].X, ObjList[i].Y, ObjList[i].Width, ObjList[i].Height, ObjList[i].Color);
+            }
+        }
+
 
         function drawStage()
         {
             // Draw stage
             if(stage.one == true)
             {
-                
+                ObjList.length = 0;
+                addObj(0, ctx.canvas.height-ctx.canvas.height/10, 234234234, ctx.canvas.height/10, '#32CD32');
+                drawObj();
             }
 
             else if(stage.two == true) 
