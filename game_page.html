@@ -166,7 +166,7 @@
             if(player.isGround == false) player.newY += 25; 
             for(let i = 0; i < ObjList.length; i++)
             {
-                if(player.newY <= ObjList[i].Y + ObjList[i].Height) player.Y = player.newY
+                if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY
             }
         }
 
