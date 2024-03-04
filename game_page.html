@@ -58,13 +58,11 @@
             ctx.canvas.height = window.innerHeight-125;
 
             floorHeight = ctx.canvas.height;
-            distanceToGround = floorHeight - player.Y;
-
-            
-
+            distanceToGround = floorHeight - player.Y
             
             // Debug
 
+            
             // Clear player
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -121,7 +119,7 @@
                         player.X = player.newX;
                         if(KeyStates.Left) player.facingR = false;
                         else  if(KeyStates.Right) player.facingR = true;
-                        console.log("urmomdsr");
+                        console.log("tumama");
                     }
                 }
             }
@@ -167,6 +165,7 @@
             for(let i = 0; i < ObjList.length; i++)
             {
                 if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY
+                else if(player.X < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY
             }
         }
 
