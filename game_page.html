@@ -37,6 +37,7 @@
         //Player variables
         var player = 
         {
+<<<<<<< HEAD
             X: 0, Y: 0, newX:0, newY: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
@@ -46,6 +47,13 @@
         }
 
         var ObjList = [];
+=======
+            X: 0, Y: 0, facingR: true, moved: false, isGround: false, newX: 0, newY: 0, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
+        }
+
+        // Walls and shit
+        const Walls = []
+>>>>>>> 379e829cc33125de6fe3a4d6e0a02fa93f521c08
 
         // Stages
         var stage = {one: true, two: false, three: false, four: false}
@@ -87,7 +95,30 @@
         {
             if(key.code == "KeyA" || key.code == "ArrowLeft")
             {
+<<<<<<< HEAD
                 KeyStates.Left = value;
+=======
+                key.preventDefault();
+
+                // Move shit
+                player.newX = player.X;
+                player.newX -= Speed;
+
+                currentWall = 0;
+
+                for(let i = 0; i < Walls.length; i++)
+                {
+                    if(player.newX < Walls.[currentWall])
+                    {
+
+                    }
+
+                    currentWall++;
+                }
+
+                player.facingR = false;
+                player.moved = true;
+>>>>>>> 379e829cc33125de6fe3a4d6e0a02fa93f521c08
             }
 
             if(key.code == "KeyD" || key.code == "ArrowRight")
@@ -188,7 +219,17 @@
             // Draw stage
             if(stage.one == true)
             {
-                
+                ctx.beginPath();
+                ctx.strokeStyle = '#26580F';
+                ctx.fillStyle = '#26580F';
+                ctx.fillRect(ctx.canvas.width/2, ctx.canvas.height-ctx.canvas.height/10, ctx.canvas.width/4, ctx.canvas.height/10);
+                ctx.stroke();
+
+                // Stupid fucking scuffed dumbass colliders
+                if(player.X > ctx.canvas.width/2 && player.X < (ctx.canvas.width/2-ctx.canvas.width/4)/2)
+                {
+                    player.X = ctx.canvas.width/2-playerSize
+                }
             }
 
             else if(stage.two == true) 
