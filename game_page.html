@@ -6,7 +6,7 @@
     <title>Game</title>
 </head>
 <body>
-    <h1>Escape Room</h1>
+    <h1>Beautiful Game 10/10</h1>
     <a href='index.html'> Home </a>
     <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"> Your browser does not support the HTML canvas tag. </canvas>
 
@@ -26,6 +26,8 @@
         var Speed = 5;
         var playerSize = ctx.canvas.height/1;
         var floorHeight;
+        var distanceToGround;
+
         //var Height = ctx.canvas.height-ctx.canvas.height/10;
         
         // Listeners
@@ -35,8 +37,15 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
+            X: 0, Y: 0, newX:0, newY: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
+
+        var KeyStates = 
+        {
+            Left: false, Right: false, Jump: false
+        }
+
+        var ObjList = [];
 
         // Stages
         var stage = {one: true, two: false, three: false, four: false}
@@ -44,15 +53,17 @@
 
         function mainLoop()
         {
-            // Set canvas width + height
+            // Set vars
             ctx.canvas.width  = window.innerWidth-10;
             ctx.canvas.height = window.innerHeight-125;
 
-            floorHeight = ctx.canvas.height-playerSize;
+            floorHeight = ctx.canvas.height;
+            distanceToGround = floorHeight - player.Y;
+
+            
 
             
             // Debug
-
 
             // Clear player
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -66,38 +77,65 @@
             checkGround();
             gravity();
             drawStage();
+            movePlayer();
+
+            // Add objects
+            addObj(100,100,100,100,"#100000");
         }  
 
         function keySetter(key,value)
         {
-            if(key.code == "KeyA" && player.X > 0|| key.code == "ArrowLeft" && player.X > 0)
+            if(key.code == "KeyA" || key.code == "ArrowLeft")
             {
-                key.preventDefault();
-                player.X -= Speed;
-                player.facingR = false;
-                player.moved = true;
+                KeyStates.Left = value;
             }
 
-            if(player.X < 0) player.X = 0;
-
-            if(key.code == "KeyD" && player.X < ctx.canvas.width-playerSize || key.code == "ArrowRight" && player.X < ctx.canvas.width-playerSize)
+            if(key.code == "KeyD" || key.code == "ArrowRight")
             {
-                key.preventDefault();
-                player.X += Speed;
-                player.facingR = true;
-                player.moved = true;
+                KeyStates.Right = value;
             }
 
-            if(player.X > ctx.canvas.width-playerSize) player.X = ctx.canvas.width-playerSize;
-
-            if(key.code == "KeyW" && player.isGround == true || key.code == "ArrowUp" && player.isGround == true)
+            if(key.code == "KeyW" || key.code == "ArrowUp" || key.code == "Space")
             {
-                jump();
-                player.moved = true;                
+                KeyStates.Jump = value;
             }
-
-            player.moved = false;
         } 
+
+        function movePlayer()
+        {
+            // Left
+            if(KeyStates.Left)
+            {
+                player.newX = player.X;
+                player.newX -= Speed;
+                for(let i = 0; i < ObjList.length; i++)
+                {
+                    if(player.newX + playerSize < ObjList[i].X && player.Y >= ObjList[i].Y || player.newX > ObjList[i].X + ObjList[i].Width && player.Y >= ObjList[i].Y)
+                    {
+                        player.X = player.newX;
+                        player.facingR = false;
+                    }
+                }
+            }
+
+            // Right
+            if(KeyStates.Right)
+            {
+                player.newX = player.X;
+                player.newX += Speed;
+                for(let i = 0; i < ObjList.length; i++)
+                {     
+                    if(player.newX + playerSize < ObjList[i].X && player.Y >= ObjList[i].Y || player.newX > ObjList[i].X + ObjList[i].Width && player.Y >= ObjList[i].Y)
+                    {
+                        player.X = player.newX;
+                        player.facingR = true;
+                    }
+                }
+            }
+
+            // Jump
+            if(KeyStates.Jump) jump();
+        }
 
         function drawImg(img, x, y)
         {
@@ -116,7 +154,7 @@
         function jump()
         {
             player.Y -= 15;
-            //player.isGround = false;
+            player.isGround = false;
             for (let i = 0; i < 5; i++) 
             {
                 player.Y -= 5;
@@ -125,29 +163,28 @@
 
         function gravity()
         {
-            //if(player.isGround == false) 
-            player.Y += 25; 
+            if(player.isGround == false) player.Y += 25; 
         }
 
         function checkGround()
         {
-            if(player.Y >= floorHeight) player.isGround = true;
+            if(player.Y >= floorHeight-playerSize) player.isGround = true;
 
             else player.isGround = false;
             
-            if(player.Y >= floorHeight) player.Y = floorHeight;
+            if(player.Y >= floorHeight-playerSize) player.Y = floorHeight-playerSize;
         }
 
-        function move()
+        function addObj(x, y, width, height, color)
         {
+            newObj = {X: x, Y: y, Width: width, Height: height, Color: color};
 
+            ObjList.push(newObj);
         }
+
 
         function drawStage()
         {
-            // Erase old stage
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
             // Draw stage
             if(stage.one == true)
             {
