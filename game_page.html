@@ -189,16 +189,19 @@
 
             for(let i = 0; i < ObjList.length; i++)
             {
-                if(player.X >= ObjList[i].X && player.X <= ObjList[i].X + ObjList[i].Width)
+                if(player.X > ObjList[i]X && player.X ObjList[i].X + ObjList[i].Width)
                 {
-                    if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
-                    else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;
-                }
-                else if(player.X + playerSize > ObjList[i].X && player.X + playerSize < ObjList[i].X + ObjList[i].Width)
-                {
-                    if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
-                    else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;                    
-                }
+                    if(player.X > ObjList[i].X && player.X < ObjList[i].X + ObjList[i].Width)
+                    {
+                        if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
+                        else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;
+                    }
+                    else if(player.X + playerSize > ObjList[i].X && player.X + playerSize < ObjList[i].X + ObjList[i].Width)
+                    {
+                        if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
+                        else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;                    
+                    }
+                }    
                 else player.isGround = true;
             }
         }
