@@ -27,7 +27,7 @@
         var playerSize = ctx.canvas.height/1;
         var floorHeight;
         var distanceToGround;
-        var jumpHeight = ctx.canvas.height.20
+        var jumpHeight = ctx.canvas.height/20
 
         //var Height = ctx.canvas.height-ctx.canvas.height/10;
         
@@ -38,7 +38,7 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, newX:0, newY: 0, facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
+            X: 0, Y: 0, newX:0, newY: 0, newGHeight: 0, gHeight:0 , facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
 
         var KeyStates = 
@@ -59,7 +59,9 @@
             ctx.canvas.height = window.innerHeight-125;
 
             floorHeight = ctx.canvas.height;
-            distanceToGround = floorHeight - player.Y
+            distanceToGround = player.gHeight.X;
+            
+            //console.log("Distance to ground: " + distanceToGround)
             
             // Debug
 
@@ -68,9 +70,26 @@
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             // Draw new player 
-            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
-            else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
+            //if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
+            //else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
+            drawRect(player.X,player.Y,playerSize,playerSize,'#100000');
 
+            for(let i = 0; i < ObjList.length; i++)
+            {
+                if(player.X + playerSize > ObjList[i].X && player.X < ObjList[i].X + ObjList[i].Width)
+                {
+                    player.newGHeight = ObjList[i]
+                    // Check New Ground Height
+                    if(i < 1) player.gHeight = player.newGHeight
+                    else
+                    {
+                        if(player.X > player.gHeight.X && player.X < player.gHeight.X + player.gHeight.Width)
+                        {
+                            if(player.gHeight.X < player.newGHeight.X) player.gHeight = player.newGHeight;
+                        }
+                    }
+                }
+            }
 
             // Call functions
             checkGround();
@@ -107,6 +126,8 @@
                 if(KeyStates.Right) player.newX += Speed;
                 for(let i = 0; i < ObjList.length; i++)
                 {
+                    console.log(i);
+                    
                     if(player.newX + playerSize < ObjList[i].X || player.newX > ObjList[i].X + ObjList[i].Width)
                     {
                         player.X = player.newX;
@@ -115,12 +136,13 @@
                         console.log("urmom");
                     }
 
-                    else if(player.Y >= ObjList[i].Y + ObjList[i].Height || player.Y + playerSize <= ObjList[i].Y)
+                    else if (player.Y + playerSize < ObjList[i].Y || player.Y >= ObjList[i].Y + ObjList[i].Height || player.Y + playerSize < ObjList[i].Y)
                     {
                         player.X = player.newX;
                         if(KeyStates.Left) player.facingR = false;
-                        else  if(KeyStates.Right) player.facingR = true;
-                        console.log("tumama");
+                        else if(KeyStates.Right) player.facingR = true;
+                        
+                        drawRect(100, ObjList[i].Y,1000,100,'#100000');
                     }
                 }
             }
@@ -162,11 +184,22 @@
         function gravity()
         {
             player.newY = player.Y;
-            if(player.isGround == false) player.newY += 25; 
+            if(player.isGround == false) player.newY += 25;
+            else if(player.isGround == false) player.newY = distanceToGround;
+
             for(let i = 0; i < ObjList.length; i++)
             {
-                if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY
-                else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY
+                if(player.X >= ObjList[i].X && player.X <= ObjList[i].X + ObjList[i].Width)
+                {
+                    if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
+                    else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;
+                }
+                else if(player.X + playerSize > ObjList[i].X && player.X + playerSize < ObjList[i].X + ObjList[i].Width)
+                {
+                    if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
+                    else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;                    
+                }
+                else player.isGround = true;
             }
         }
 
@@ -201,8 +234,15 @@
             if(stage.one == true)
             {
                 ObjList.length = 0;
-                addObj(ctx.canvas.width/2, ctx.canvas.height-ctx.canvas.height/10, ctx.canvas.width/2, ctx.canvas.height/10, '#32CD32');
+                addObj(0, ctx.canvas.height-ctx.canvas.height/10, ctx.canvas.width, ctx.canvas.height/10, '#32CD32');
+                addObj(ctx.canvas.width/2, ctx.canvas.height-ctx.canvas.height/5, ctx.canvas.width/2, ctx.canvas.height/10, '#32CD32');
                 drawObj();
+
+                if(player.X > ctx.canvas.width-ctx.canvas.width/10) 
+                {
+                    stage.two = true;
+                    stage.one = false;
+                }
             }
 
             else if(stage.two == true) 
