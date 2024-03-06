@@ -23,11 +23,12 @@
         const ctx = c.getContext("2d");
         
         // Variables
-        var Speed = 5;
+        var Speed = 15;
         var playerSize = ctx.canvas.height/1;
         var floorHeight;
         var distanceToGround;
         var jumpHeight = ctx.canvas.height/20
+        var gameRunning = true;
 
         //var Height = ctx.canvas.height-ctx.canvas.height/10;
         
@@ -38,13 +39,17 @@
         //Player variables
         var player = 
         {
-            X: 0, Y: 0, newX:0, newY: 0, newGHeight: 0, gHeight:0 , facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
+            X: 0, Y: 0, newX:0, newY: 0, newGHeight:{X:0,Y:0}, gHeight:{X:0,Y:0} , facingR: true, moved: false, isGround: false, imgR: document.getElementById("PlayerR"), imgL: document.getElementById("PlayerL")
         }
-
+        //console.log(player.gHeight);
         var KeyStates = 
         {
-            Left: false, Right: false, Jump: false
+            Left: false, Right: false, Jump: false, U:false, I: false, O: false, P: false
         }
+
+        var Questions = [];
+
+        Questions[0] = {Question: "What is the correct definition of source?", WrongAnsOne: "The end point of a message.", WrongAnsTwo: "The person or thing that changes a message so that it can be sent.", WrongAnsThree: "The person or thing that makes a message readable again.", CorrectAns: "The starting point of a message"}
 
         var ObjList = [];
 
@@ -60,7 +65,7 @@
 
             floorHeight = ctx.canvas.height;
             distanceToGround = player.gHeight.X;
-            
+            player.gHeight.Y = ctx.canvas.height;
             //console.log("Distance to ground: " + distanceToGround)
             
             // Debug
@@ -70,32 +75,83 @@
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
             // Draw new player 
-            //if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
-            //else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
-            drawRect(player.X,player.Y,playerSize,playerSize,'#100000');
+            if(gameRunning == true)
+            {
+            if(player.facingR == true) ctx.drawImage(player.imgR, player.X, player.Y, playerSize, playerSize);
+            else ctx.drawImage(player.imgL, player.X, player.Y, playerSize, playerSize);
+            }
+            //drawRect(player.X,player.Y,playerSize,playerSize,'#100000');
 
             for(let i = 0; i < ObjList.length; i++)
             {
-                if(player.X + playerSize > ObjList[i].X && player.X < ObjList[i].X + ObjList[i].Width)
+                player.newGHeight = ObjList[i];
+                //console.log("running for loop");
+
+                if(player.X + playerSize > ObjList[i].X && player.X + playerSize < ObjList[i].X + ObjList[i].Width || player.X > ObjList[i].X && player.X < ObjList[i].X + ObjList[i].Width)
                 {
-                    player.newGHeight = ObjList[i]
-                    // Check New Ground Height
-                    if(i < 1) player.gHeight = player.newGHeight
-                    else
+                    // Challange G Height
+                    if(player.X < player.gHeight.X && player.X + playerSize < player.gHeight.X || player.X > player.gHeight.X + player.gHeight.Width && player.X + playerSize > player.gHeight.X + player.gHeight.Width) 
                     {
-                        if(player.X > player.gHeight.X && player.X < player.gHeight.X + player.gHeight.Width)
-                        {
-                            if(player.gHeight.X < player.newGHeight.X) player.gHeight = player.newGHeight;
-                        }
+                        player.gHeight = 0;
+                        //console.log("reset g height");
                     }
+
+                    // Test + set G height
+            
+                    if(player.newGHeight.Y < player.gHeight.Y) 
+                    {
+                        player.gHeight = player.newGHeight;
+                        //console.log("G height set"); 
+                    }
+
+                    else if(player.gHeight == 0) player.gHeight = player.newGHeight
                 }
+                //console.log(player.newGHeight);
+                //console.log(player.gHeight.Y);
+                //console.log(player.newGHeight);   
+                
+                //console.log(player.newGHeight + " newG");
+
+                //console.log(ObjList[2].Y);
+
+                //console.log("new g height: " + player.newGHeight.X + " g height: " + player.gHeight.X + " objlist: " + ObjList[i].X);
+
+                //console.log(i);
             }
+            //console.log(ObjList[2].X);
+
+
 
             // Call functions
             checkGround();
             gravity();
-            drawStage();
+            if(gameRunning == true) drawStage();
             movePlayer();
+
+            if(gameRunning == false)
+            {
+                ctx.font = "30px Arial";
+                ctx.fillText(Questions[0].Question, 10, 50);
+
+                ctx.font = "15px Arial";
+                ctx.fillText(Questions[0].WrongAnsOne + " - press U to select", 10, 100);
+                ctx.fillText(Questions[0].WrongAnsTwo + "- press I to select", 10, 150);
+                ctx.fillText(Questions[0].WrongAnsThree + " - press O to select", 10, 200);
+                ctx.fillText(Questions[0].CorrectAns + " - press P to select", 10, 250);
+
+                if(KeyStates.U || KeyStates.I || KeyStates.O) 
+                {
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.font = "60px Arial";
+                    ctx.fillText("You are wrong", 10, 50);                    
+                }
+                else if(KeyStates.P)
+                {
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.font = "60px Arial";
+                    ctx.fillText("You are correct!", 10, 50);
+                }
+            }
         }  
 
         function keySetter(key,value)
@@ -114,11 +170,31 @@
             {
                 KeyStates.Jump = value;
             }
+
+            if(key.code == "KeyU")
+            {
+                KeyStates.U = value;
+            }
+
+            if(key.code == "KeyI")
+            {
+                KeyStates.I = value;
+            }
+
+            if(key.code == "KeyO")
+            {
+                KeyStates.O = value;
+            }
+
+            if(key.code == "KeyP")
+            {
+                KeyStates.P = value;
+            }
         } 
 
         function movePlayer()
         {
-            // Left
+            // Left + Right
             if(KeyStates.Left || KeyStates.Right)
             {
                 player.newX = player.X;
@@ -126,14 +202,18 @@
                 if(KeyStates.Right) player.newX += Speed;
                 for(let i = 0; i < ObjList.length; i++)
                 {
-                    console.log(i);
+                    //console.log(i);
                     
-                    if(player.newX + playerSize < ObjList[i].X || player.newX > ObjList[i].X + ObjList[i].Width)
+                    if(player.newX + playerSize < ObjList[i].X && player.newX > ObjList[i].X + ObjList[i].Width)
                     {
-                        player.X = player.newX;
-                        if(KeyStates.Left) player.facingR = false;
-                        else if(KeyStates.Right) player.facingR = true;
-                        console.log("urmom");
+                        if(player.Y + playerSize/2 < ObjList[i].Y)
+                        {
+                            player.X = player.newX;
+                            if(KeyStates.Left) player.facingR = false;
+                            else if(KeyStates.Right) player.facingR = true;
+                            //console.log("urmom");  
+                        }
+
                     }
 
                     else if (player.Y + playerSize < ObjList[i].Y || player.Y >= ObjList[i].Y + ObjList[i].Height || player.Y + playerSize < ObjList[i].Y)
@@ -142,16 +222,16 @@
                         if(KeyStates.Left) player.facingR = false;
                         else if(KeyStates.Right) player.facingR = true;
                         
-                        drawRect(100, ObjList[i].Y,1000,100,'#100000');
+                        //drawRect(100, ObjList[i].Y,1000,100,'#100000');
                     }
                 }
             }
 
            
             // Jump
-            if(KeyStates.Jump && player.isGround == true)
+            if(KeyStates.Jump)// && player.isGround == true)
             {
-                player.isGround = false;
+                //player.isGround = false;
 
                 for (let i = 0; i < 25; i++) 
                 {
@@ -184,26 +264,14 @@
         function gravity()
         {
             player.newY = player.Y;
-            if(player.isGround == false) player.newY += 25;
-            else if(player.isGround == false) player.newY = distanceToGround;
+            player.newY += 25;
 
-            for(let i = 0; i < ObjList.length; i++)
-            {
-                if(player.X > ObjList[i]X && player.X ObjList[i].X + ObjList[i].Width)
-                {
-                    if(player.X > ObjList[i].X && player.X < ObjList[i].X + ObjList[i].Width)
-                    {
-                        if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
-                        else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;
-                    }
-                    else if(player.X + playerSize > ObjList[i].X && player.X + playerSize < ObjList[i].X + ObjList[i].Width)
-                    {
-                        if(player.newY + playerSize <= ObjList[i].Y) player.Y = player.newY;
-                        else if(player.X + playerSize < ObjList[i].X || player.X > ObjList[i].X + ObjList[i].Width) player.Y = player.newY;                    
-                    }
-                }    
-                else player.isGround = true;
-            }
+            if(player.Y + playerSize < player.gHeight.Y) player.Y = player.newY;
+            //else if(player.X < player.gHeight.X && player.X + playerSize < player.gHeight.X || player.X > player.gHeight.X + player.gHeight.Width && player.X + playerSize > player.gHeight.X + player.gHeight.Width)
+            //{
+            //    player.Y = player.newY;
+            //}
+            //console.log(player.Y + playerSize + " Y");
         }
 
         function checkGround()
@@ -237,14 +305,14 @@
             if(stage.one == true)
             {
                 ObjList.length = 0;
-                addObj(0, ctx.canvas.height-ctx.canvas.height/10, ctx.canvas.width, ctx.canvas.height/10, '#32CD32');
-                addObj(ctx.canvas.width/2, ctx.canvas.height-ctx.canvas.height/5, ctx.canvas.width/2, ctx.canvas.height/10, '#32CD32');
+                addObj(0, ctx.canvas.height - ctx.canvas.height/10, ctx.canvas.width - ctx.canvas.width/7.5, ctx.canvas.height/10, '#32CD32');
+                addObj(ctx.canvas.width/2, ctx.canvas.height - ctx.canvas.height/5, ctx.canvas.width/2 - ctx.canvas.width/7.5, ctx.canvas.height/10, '#32CD32');
+                addObj(ctx.canvas.width - ctx.canvas.width/7.5, ctx.canvas.height - ctx.canvas.height/50, ctx.canvas.width/2 - ctx.canvas.width/10, ctx.canvas.height/50, '#000000');
                 drawObj();
 
                 if(player.X > ctx.canvas.width-ctx.canvas.width/10) 
                 {
-                    stage.two = true;
-                    stage.one = false;
+                    gameRunning = false;
                 }
             }
 
